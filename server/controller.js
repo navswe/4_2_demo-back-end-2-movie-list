@@ -31,4 +31,30 @@ module.exports = {
     }
     res.status(400).send("movie not found");
   },
+  updateMovie: (req, res) => {
+    const id = +req.params.id;
+    const type = req.body.type;
+
+    let movieIndex;
+    for (let i = 0; i < movieDatabase.length; i++) {
+      if (movieDatabase[i].id === id) {
+        movieIndex = i;
+      }
+    }
+    if (movieIndex === undefined) {
+      res.status(400).send("movie not found");
+    } else if (type === "plus") {
+      if (movieDatabase[movieIndex].rating < 5) {
+        movieDatabase[movieIndex].rating++;
+      }
+      res.status(200).send(movieDatabase);
+    } else if (type === "minus") {
+      if (movieDatabase[movieIndex].rating > 1) {
+        movieDatabase[movieIndex].rating--;
+      }
+      res.status(200).send(movieDatabase);
+    } else {
+      res.status(400).send("invalid type constraint");
+    }
+  },
 };
